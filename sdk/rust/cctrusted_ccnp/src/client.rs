@@ -159,7 +159,7 @@ impl CcnpServiceClient {
 
         let request = Request::new(GetCcEventlogRequest {
             start: start.unwrap(),
-            count: None,
+            //count: count.unwrap(),
         });
 
         let mut ccnp_client = CcnpClient::new(channel);
