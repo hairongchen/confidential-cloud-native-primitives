@@ -58,4 +58,15 @@ fn main() {
     for replay_result in replay_results {
         replay_result.show();
     }
+
+    // retrieve cc eventlog with API "get_cc_eventlog"
+    let eventlogs1 = match API::get_cc_eventlog(Some(0), None) {
+        Ok(q) => q,
+        Err(e) => {
+            error!("error getting eventlog: {:?}", e);
+            return;
+        }
+    };
+
+    info!("event log count: {}", eventlogs1.len());
 }
