@@ -146,7 +146,7 @@ impl CCTrustedApi for API {
             ccnp_uds_path: UDS_PATH.to_string(),
         };
 
-        let response = match ccnp_service_client.get_cc_measurement_count_from_server() {
+        let response = match ccnp_service_client.get_default_algorithm() {
             Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!("[get_default_algorithm] err get cc get default algorithm: {:?}", e));
