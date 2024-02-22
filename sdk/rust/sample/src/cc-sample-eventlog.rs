@@ -8,7 +8,18 @@ fn main() {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     // retrieve cc eventlog with API "get_cc_eventlog"
-    let eventlogs = match API::get_cc_eventlog(Some(0), Some(10)) {
+    let eventlogs1 = match API::get_cc_eventlog(Some(0), None) {
+        Ok(q) => q,
+        Err(e) => {
+            error!("error getting eventlog: {:?}", e);
+            return;
+        }
+    };
+
+    info!("event log count: {}", eventlogs1.len());
+
+    // retrieve cc eventlog with API "get_cc_eventlog"
+    let eventlogs = match API::get_cc_eventlog(Some(0), Some(101)) {
         Ok(q) => q,
         Err(e) => {
             error!("error getting eventlog: {:?}", e);
@@ -59,14 +70,4 @@ fn main() {
         replay_result.show();
     }
 
-    // retrieve cc eventlog with API "get_cc_eventlog"
-    let eventlogs1 = match API::get_cc_eventlog(Some(0), None) {
-        Ok(q) => q,
-        Err(e) => {
-            error!("error getting eventlog: {:?}", e);
-            return;
-        }
-    };
-
-    info!("event log count: {}", eventlogs1.len());
 }
