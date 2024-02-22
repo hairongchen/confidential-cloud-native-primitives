@@ -8,7 +8,7 @@ fn main() {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     // retrieve cc eventlog with API "get_cc_eventlog"
-    let eventlogs = match API::get_cc_eventlog(Some(0), Some(101)) {
+    let eventlogs = match API::get_cc_eventlog(Some(0), Some(10)) {
         Ok(q) => q,
         Err(e) => {
             error!("error getting eventlog: {:?}", e);
