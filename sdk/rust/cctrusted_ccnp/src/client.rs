@@ -1,6 +1,7 @@
 use crate::client::ccnp_server_pb::{
     ccnp_client::CcnpClient, GetCcEventlogRequest, GetCcEventlogResponse, GetCcMeasurementRequest,
-    GetCcMeasurementResponse, GetCcReportRequest, GetCcReportResponse,
+    GetCcMeasurementResponse, GetCcReportRequest, GetCcReportResponse, GetDefaultAlgorithmRequest,
+    GetDefaultAlgorithmResponse, GetMeasurementCountRequest, GetMeasurementCountResponse
 };
 use cctrusted_base::api_data::ExtraArgs;
 use cctrusted_base::cc_type::TeeType;
@@ -183,6 +184,78 @@ impl CcnpServiceClient {
             .build()
             .unwrap()
             .block_on(self.get_cc_eventlog_from_server_async(start, count));
+        response
+    }
+
+    async fn get_cc_measurement_count_from_server_async(
+        &mut self,
+    ) -> Result<GetMeasurementCountResponse, anyhow::Error> {
+        let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
+        let channel = Endpoint::try_from("http://[::]:0")
+            .unwrap()
+            .connect_with_connector(service_fn(move |_: Uri| {
+                UnixStream::connect(uds_path.to_string())
+            }))
+            .await
+            .unwrap();
+
+        let request = Request::new(GetMeasurementCountRequest {});
+
+        let mut ccnp_client = CcnpClient::new(channel);
+
+        let response = ccnp_client
+            .get_measurement_count(request)
+            .await
+            .unwrap()
+            .into_inner();
+        Ok(response)
+    }
+
+    // turn async call to sync call
+    pub fn get_cc_measurement_count_from_server(
+        &mut self,
+    ) -> Result<GetMeasurementCountResponse, anyhow::Error> {
+        let response = tokio::runtime::Builder::new_multi_thread()
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(self.get_cc_measurement_count_from_server_async());
+        response
+    }
+
+    async fn get_cc_default_algorithm_from_server_async(
+        &mut self,
+    ) -> Result<GetDefaultAlgorithmResponse, anyhow::Error> {
+        let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
+        let channel = Endpoint::try_from("http://[::]:0")
+            .unwrap()
+            .connect_with_connector(service_fn(move |_: Uri| {
+                UnixStream::connect(uds_path.to_string())
+            }))
+            .await
+            .unwrap();
+
+        let request = Request::new(GetDefaultAlgorithmRequest {});
+
+        let mut ccnp_client = CcnpClient::new(channel);
+
+        let response = ccnp_client
+            .get_default_algorithm(request)
+            .await
+            .unwrap()
+            .into_inner();
+        Ok(response)
+    }
+
+    // turn async call to sync call
+    pub fn get_cc_default_algorithm_from_server(
+        &mut self,
+    ) -> Result<GetDefaultAlgorithmResponse, anyhow::Error> {
+        let response = tokio::runtime::Builder::new_multi_thread()
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(self.get_cc_default_algorithm_from_server_async());
         response
     }
 }
