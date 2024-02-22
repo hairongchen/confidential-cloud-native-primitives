@@ -52,13 +52,13 @@ impl CcnpServiceClient {
 
         let n = match nonce {
             Some(n) => n,
-            None => None,
+            None => "".to_string(),
 
         };
 
         let d = match data {
             Some(d) => d,
-            None => None,
+            None => "".to_string(),
 
         };
 
