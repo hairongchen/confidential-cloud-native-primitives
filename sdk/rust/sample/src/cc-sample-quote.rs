@@ -53,4 +53,16 @@ fn main() {
         info!("call struct show function to show data of the struct TdxQuoteHeader!");
         tdx_quote.header.show();
     }
+
+    // retrieve cc report with API "get_cc_report"
+    info!("call cc trusted API [get_cc_report] to retrieve cc report!");
+    let report1 = match API::get_cc_report(None, None, ExtraArgs {}) {
+        Ok(q) => q,
+        Err(e) => {
+            info!("error getting cc report: {:?}", e);
+            return;
+        }
+    };
+
+    info!("length of the cc report: {}", report1.cc_report.len());
 }
