@@ -55,7 +55,7 @@ impl CCTrustedApi for API {
             }
         };
 
-        Ok(response.count)
+        Ok(response.count.try_into().unwrap())
     }
 
     // CCTrustedApi trait function: get measurements
@@ -154,8 +154,8 @@ impl CCTrustedApi for API {
         };
 
         Ok(Algorithm {
-            algo_id: response.algo_id
-            algo_id_str: ALGO_NAME_MAP.get(&algo_id).unwrap().to_owned(),
+            algo_id: response.algo_id,
+            algo_id_str: ALGO_NAME_MAP.get(&response.algo_id).unwrap().to_owned(),
         })
     }
 }
