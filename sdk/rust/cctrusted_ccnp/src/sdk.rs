@@ -153,9 +153,10 @@ impl CCTrustedApi for API {
             }
         };
 
+        let algo_id = response.algo_id as u16;
         Ok(Algorithm {
-            algo_id: response.algo_id,
-            algo_id_str: ALGO_NAME_MAP.get(&response.algo_id).unwrap().to_owned(),
+            algo_id,
+            algo_id_str: ALGO_NAME_MAP.get(&algo_id).unwrap().to_owned(),
         })
     }
 }
