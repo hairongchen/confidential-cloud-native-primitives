@@ -13,8 +13,9 @@ use tower::service_fn;
 
 //FixMe: use map from cc_type
 lazy_static! {
-    pub static ref TEE_VALUE_TYPE_MAP: HashMap<u32, TeeType> = {
-        let mut map: HashMap<u32, TeeType> = HashMap::new();
+    pub static ref TEE_VALUE_TYPE_MAP: HashMap<i32, TeeType> = {
+        let mut map: HashMap<i32, TeeType> = HashMap::new();
+        map.insert(-1, TeeType::PLAIN);
         map.insert(0, TeeType::TPM);
         map.insert(1, TeeType::TDX);
         map.insert(2, TeeType::SEV);
@@ -92,7 +93,7 @@ impl CcnpServiceClient {
         response
     }
 
-    pub fn get_tee_type_by_value(&self, tee_id: &u32) -> TeeType {
+    pub fn get_tee_type_by_value(&self, tee_id: &i32) -> TeeType {
         match TEE_VALUE_TYPE_MAP.get(tee_id) {
             Some(tee_type) => tee_type.clone(),
             None => TeeType::PLAIN,
