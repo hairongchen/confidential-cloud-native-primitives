@@ -153,6 +153,9 @@ impl CCTrustedApi for API {
             }
         };
 
-        Ok(response.algo_id)
+        Ok(Algorithm {
+            algo_id: response.algo_id
+            algo_id_str: ALGO_NAME_MAP.get(&algo_id).unwrap().to_owned(),
+        })
     }
 }
