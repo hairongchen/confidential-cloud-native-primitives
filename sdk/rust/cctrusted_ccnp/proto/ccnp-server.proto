@@ -43,7 +43,7 @@ message GetCcReportRequest {
 }
 
 message GetCcReportResponse {
-    uint32 cc_type = 1;
+    int32 cc_type = 1;
     bytes cc_report = 2;
 }
 

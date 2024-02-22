@@ -50,9 +50,21 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
+        let n = match nonce {
+            Some(n) => n,
+            None => None,
+
+        };
+
+        let d = match data {
+            Some(d) => d,
+            None => None,
+
+        };
+
         let request = Request::new(GetCcReportRequest {
-            nonce: nonce.unwrap(),
-            user_data: data.unwrap(),
+            nonce: n,
+            user_data: d,
         });
 
         let mut ccnp_client = CcnpClient::new(channel);
