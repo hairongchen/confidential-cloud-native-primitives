@@ -1,3 +1,4 @@
+use anyhow::anyhow;
 use crate::client::ccnp_server_pb::{
     ccnp_client::CcnpClient, GetCcEventlogRequest, GetCcEventlogResponse, GetCcMeasurementRequest,
     GetCcMeasurementResponse, GetCcReportRequest, GetCcReportResponse, GetDefaultAlgorithmRequest,
@@ -7,6 +8,9 @@ use cctrusted_base::api_data::ExtraArgs;
 use cctrusted_base::cc_type::TeeType;
 use core::result::Result::Ok;
 use hashbrown::HashMap;
+use std::fs::File;
+use std::io::BufReader;
+use std::io::read_to_string;
 use tokio::net::UnixStream;
 use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
@@ -53,11 +57,11 @@ impl CcnpServiceClient {
             .unwrap();
 
         let container_id = match self.get_container_id() {
-            Ok(id) => container_id,
+            Ok(id) => id,
             Err(e) => {
                 return Err(anyhow!("[get_cc_report_from_server_async] error getting the container ID: {:?}", e));
             },
-        }
+        };
 
         let request = Request::new(GetCcReportRequest {
             container_id,
@@ -112,11 +116,11 @@ impl CcnpServiceClient {
             .unwrap();
 
         let container_id = match self.get_container_id() {
-            Ok(id) => container_id,
+            Ok(id) => id,
             Err(e) => {
                 return Err(anyhow!("[get_cc_measurement_from_server_async] error getting the container ID: {:?}", e));
             },
-        }
+        };
 
         let request = Request::new(GetCcMeasurementRequest {
             container_id,
@@ -162,12 +166,12 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        let container_id = match self.get_container_id() {
-            Ok(id) => container_id,
+        let id = match self.get_container_id() {
+            Ok(id) => id,
             Err(e) => {
                 return Err(anyhow!("[get_cc_eventlog_from_server_async] error getting the container ID: {:?}", e));
             },
-        }
+        };
 
         let request = Request::new(GetCcEventlogRequest {
             container_id,
@@ -288,7 +292,7 @@ impl CcnpServiceClient {
             .map(String::from);
 
         for line in data_lines {
-            /**
+            /*
              * /var/lib/docker/containers/{container-id}/{file}
              * example: 
              */
@@ -300,7 +304,7 @@ impl CcnpServiceClient {
                 }
             }
 
-            /**
+            /*
              * line: /var/lib/kubelet/pods/{container-id}/{file}
              * example: 2958 2938 253:1 /var/lib/kubelet/pods/a45f46f0-20be-45ab-ace6-b77e8e2f062c/containers/busybox/8f8d892c /dev/termination-log rw,relatime - ext4 /dev/vda1 rw,discard,errors=remount-ro
              */
