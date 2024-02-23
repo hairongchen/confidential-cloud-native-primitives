@@ -296,8 +296,9 @@ impl CcnpServiceClient {
              * example: 
              */
             if line.contains(docker_pattern) {
-                if let e = line.split(docker_pattern).collect::<Vec<_>>().last() {
-                    Ok(e?.split("/").collect::<Vec<_>>().first())
+                if let e = line.split(docker_pattern).last() {
+                    let (id, _) = e.unwrap().split_once("/").unwrap();
+                    Ok(id)
                 } else {
                     return Err(anyhow!("[get_container_id] incorrect docker container info in /proc/self/mountinfo!"));
                 }
@@ -308,8 +309,10 @@ impl CcnpServiceClient {
              * example: 2958 2938 253:1 /var/lib/kubelet/pods/a45f46f0-20be-45ab-ace6-b77e8e2f062c/containers/busybox/8f8d892c /dev/termination-log rw,relatime - ext4 /dev/vda1 rw,discard,errors=remount-ro
              */
             if line.contains(k8s_pattern){
-                if let e = line.split(k8s_pattern).collect::<Vec<_>>().last() {
-                    Ok(e?.split("/").collect::<Vec<_>>().first().replace("-", "-"))
+                if let e = line.split(k8s_pattern).last() {
+                    let (left, _) = e.unwrap().split_once("/").unwrap();
+                    let id = left.replace("-", "_");
+                    Ok(id)
                 } else {
                    return Err(anyhow!("[get_container_id] incorrect k8s pod container info in /proc/self/mountinfo!"));
                 }
