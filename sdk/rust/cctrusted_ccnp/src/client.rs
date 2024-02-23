@@ -9,6 +9,7 @@ use cctrusted_base::cc_type::TeeType;
 use core::result::Result::Ok;
 use hashbrown::HashMap;
 use std::fs::File;
+use std::io::Read;
 use std::io::BufReader;
 use std::io::read_to_string;
 use tokio::net::UnixStream;
@@ -166,7 +167,7 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        let id = match self.get_container_id() {
+        let container_id = match self.get_container_id() {
             Ok(id) => id,
             Err(e) => {
                 return Err(anyhow!("[get_cc_eventlog_from_server_async] error getting the container ID: {:?}", e));
@@ -282,11 +283,11 @@ impl CcnpServiceClient {
 
         let mut data_lines = Vec::new();
 
-        let file = File::open(mountinfo)?;
-        let mut file_reader = BufReader::new(file);
-        let mut file_string = String::new();
-        let _ = file_reader.read_to_string(&mut file_string);
-        data_lines = read_to_string(ima_data_file)
+        // let file = File::open(mountinfo)?;
+        // let mut file_reader = BufReader::new(file);
+        // let mut file_string = String::new();
+        // let _ = file_reader.read_to_string(&mut file_string);
+        data_lines = read_to_string(mountinfo)
             .unwrap()
             .lines()
             .map(String::from);
