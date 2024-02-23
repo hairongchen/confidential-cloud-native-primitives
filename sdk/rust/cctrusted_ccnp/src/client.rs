@@ -52,21 +52,17 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        let n = match nonce {
-            Some(n) => n,
-            None => "".to_string(),
-
-        };
-
-        let d = match data {
-            Some(d) => d,
-            None => "".to_string(),
-
-        };
+        let container_id = match self.get_container_id() {
+            Ok(id) => container_id,
+            Err(e) => {
+                return Err(anyhow!("[get_cc_report_from_server_async] error getting the container ID: {:?}", e));
+            },
+        }
 
         let request = Request::new(GetCcReportRequest {
-            nonce: n,
-            user_data: d,
+            container_id,
+            nonce,
+            user_data: data,
         });
 
         let mut ccnp_client = CcnpClient::new(channel);
@@ -115,7 +111,15 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
+        let container_id = match self.get_container_id() {
+            Ok(id) => container_id,
+            Err(e) => {
+                return Err(anyhow!("[get_cc_measurement_from_server_async] error getting the container ID: {:?}", e));
+            },
+        }
+
         let request = Request::new(GetCcMeasurementRequest {
+            container_id,
             index: index.into(),
             algo_id: algo_id.into(),
         });
@@ -158,9 +162,17 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
+        let container_id = match self.get_container_id() {
+            Ok(id) => container_id,
+            Err(e) => {
+                return Err(anyhow!("[get_cc_eventlog_from_server_async] error getting the container ID: {:?}", e));
+            },
+        }
+
         let request = Request::new(GetCcEventlogRequest {
-            start: start.unwrap(),
-            count: count.unwrap(),
+            container_id,
+            start,
+            count,
         });
 
         let mut ccnp_client = CcnpClient::new(channel);
@@ -257,5 +269,51 @@ impl CcnpServiceClient {
             .unwrap()
             .block_on(self.get_cc_default_algorithm_from_server_async());
         response
+    }
+
+    pub fn get_container_id(&self) -> Result<String, anyhow::Error> {
+        let mountinfo = "/proc/self/mountinfo";
+        let docker_pattern = "/docker/containers/";
+        let k8s_pattern = "/kubelet/pods/";
+
+        let mut data_lines = Vec::new();
+
+        let file = File::open(mountinfo)?;
+        let mut file_reader = BufReader::new(file);
+        let mut file_string = String::new();
+        let _ = file_reader.read_to_string(&mut file_string);
+        data_lines = read_to_string(ima_data_file)
+            .unwrap()
+            .lines()
+            .map(String::from);
+
+        for line in data_lines {
+            /**
+             * /var/lib/docker/containers/{container-id}/{file}
+             * example: 
+             */
+            if line.contains(docker_pattern) {
+                if let e = line.split(docker_pattern).last() {
+                    Ok(e.split("/").first())
+                } else {
+                    Err(anyhow!("[get_container_id] incorrect docker container info in /proc/self/mountinfo!"))
+                }
+            }
+
+            /**
+             * line: /var/lib/kubelet/pods/{container-id}/{file}
+             * example: 2958 2938 253:1 /var/lib/kubelet/pods/a45f46f0-20be-45ab-ace6-b77e8e2f062c/containers/busybox/8f8d892c /dev/termination-log rw,relatime - ext4 /dev/vda1 rw,discard,errors=remount-ro
+             */
+            if line.contains(k8s_pattern){
+                if let e = line.split(k8s_pattern).last() {
+                    Ok(e.split("/").first().replace("-", "-"))
+                } else {
+                    Err(anyhow!("[get_container_id] incorrect k8s pod container info in /proc/self/mountinfo!"))
+                }
+            }
+        }
+
+        Err(anyhow!("[get_container_id] no container info in /proc/self/mountinfo!"))
+
     }
 }
