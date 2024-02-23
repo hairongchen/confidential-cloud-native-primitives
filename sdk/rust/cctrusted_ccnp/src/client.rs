@@ -292,7 +292,7 @@ impl CcnpServiceClient {
 
         for line in data_lines {
             /*
-             * /var/lib/docker/containers/{container-id}/{file}
+             * ... /var/lib/docker/containers/{container-id}/{file} ...
              * example: 
              */
             if line.contains(docker_pattern) {
@@ -305,7 +305,7 @@ impl CcnpServiceClient {
             }
 
             /*
-             * line: /var/lib/kubelet/pods/{container-id}/{file}
+             * line: ... /var/lib/kubelet/pods/{container-id}/{file} ...
              * example: 2958 2938 253:1 /var/lib/kubelet/pods/a45f46f0-20be-45ab-ace6-b77e8e2f062c/containers/busybox/8f8d892c /dev/termination-log rw,relatime - ext4 /dev/vda1 rw,discard,errors=remount-ro
              */
             if line.contains(k8s_pattern){
