@@ -290,7 +290,8 @@ impl CcnpServiceClient {
         data_lines = read_to_string(mountinfo)
             .unwrap()
             .lines()
-            .map(String::from);
+            .map(String::from)
+            .collect();
 
         for line in data_lines {
             /*
