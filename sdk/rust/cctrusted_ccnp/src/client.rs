@@ -298,7 +298,7 @@ impl CcnpServiceClient {
             if line.contains(docker_pattern) {
                 if let e = line.split(docker_pattern).last() {
                     let (id, _) = e.unwrap().split_once("/").unwrap();
-                    return Ok(id);
+                    return Ok(id.to_string());
                 } else {
                     return Err(anyhow!("[get_container_id] incorrect docker container info in /proc/self/mountinfo!"));
                 }
