@@ -300,7 +300,7 @@ impl CcnpServiceClient {
              */
             if line.contains(docker_pattern) {
                 if let e = line.split(docker_pattern).last() {
-                    Ok(e.expect("REASON").split("/").first())
+                    Ok(e.split("/").first())
                 } else {
                     return Err(anyhow!("[get_container_id] incorrect docker container info in /proc/self/mountinfo!"));
                 }
@@ -312,7 +312,7 @@ impl CcnpServiceClient {
              */
             if line.contains(k8s_pattern){
                 if let e = line.split(k8s_pattern).last() {
-                    Ok(e.expect("REASON").split("/").first().replace("-", "-"))
+                    Ok(e.split("/").first().replace("-", "-"))
                 } else {
                    return Err(anyhow!("[get_container_id] incorrect k8s pod container info in /proc/self/mountinfo!"));
                 }
