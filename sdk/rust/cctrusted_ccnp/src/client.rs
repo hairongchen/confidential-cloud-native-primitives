@@ -277,7 +277,7 @@ impl CcnpServiceClient {
     }
 
     pub fn get_container_id(&self) -> Result<String, anyhow::Error> {
-        let mountinfo = "/proc/self/mountinfo";
+        let mountinfo = "/proc/self/mountinfo".to_string();
         let docker_pattern = "/docker/containers/";
         let k8s_pattern = "/kubelet/pods/";
 
@@ -301,7 +301,7 @@ impl CcnpServiceClient {
                 if let e = line.split(docker_pattern).last() {
                     Ok(e.split("/").first())
                 } else {
-                    Err(anyhow!("[get_container_id] incorrect docker container info in /proc/self/mountinfo!"))
+                    return Err(anyhow!("[get_container_id] incorrect docker container info in /proc/self/mountinfo!"));
                 }
             }
 
@@ -313,7 +313,7 @@ impl CcnpServiceClient {
                 if let e = line.split(k8s_pattern).last() {
                     Ok(e.split("/").first().replace("-", "-"))
                 } else {
-                    Err(anyhow!("[get_container_id] incorrect k8s pod container info in /proc/self/mountinfo!"))
+                   return Err(anyhow!("[get_container_id] incorrect k8s pod container info in /proc/self/mountinfo!"));
                 }
             }
         }
