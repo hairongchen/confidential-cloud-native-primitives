@@ -278,8 +278,8 @@ impl CcnpServiceClient {
         let docker_pattern = "/docker/containers/";
         let k8s_pattern = "/kubelet/pods/";
 
-        //let mut data_lines = Vec::new();
-        let data_lines: Vec = read_to_string(mountinfo)
+        let mut data_lines = Vec::new();
+        data_lines = read_to_string(mountinfo)
             .unwrap()
             .lines()
             .map(String::from)
