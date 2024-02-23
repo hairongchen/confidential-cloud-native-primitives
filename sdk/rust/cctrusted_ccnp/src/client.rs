@@ -278,13 +278,7 @@ impl CcnpServiceClient {
         let docker_pattern = "/docker/containers/";
         let k8s_pattern = "/kubelet/pods/";
 
-        let mut data_lines = Vec::new();
-
-        // let file = File::open(mountinfo)?;
-        // let mut file_reader = BufReader::new(file);
-        // let mut file_string = String::new();
-        // let _ = file_reader.read_to_string(&mut file_string);
-        data_lines = read_to_string(mountinfo)
+        let data_lines = read_to_string(mountinfo)
             .unwrap()
             .lines()
             .map(String::from)
