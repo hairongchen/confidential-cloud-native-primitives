@@ -30,8 +30,8 @@ lazy_static! {
 pub mod ccnp_server_pb {
     tonic::include_proto!("ccnp_server_pb");
 
-    pub(crate) const FILE_DESCRIPTOR_SET: &[u8] =
-        tonic::include_file_descriptor_set!("ccnp_server_descriptor");
+    // pub(crate) const FILE_DESCRIPTOR_SET: &[u8] =
+    //     tonic::include_file_descriptor_set!("ccnp_server_descriptor");
 }
 
 pub struct CcnpServiceClient {
@@ -278,7 +278,7 @@ impl CcnpServiceClient {
         let docker_pattern = "/docker/containers/";
         let k8s_pattern = "/kubelet/pods/";
 
-        let mut data_lines: Vec<String> = read_to_string(mountinfo)
+        let data_lines: Vec<String> = read_to_string(mountinfo)
             .unwrap()
             .lines()
             .map(String::from)
