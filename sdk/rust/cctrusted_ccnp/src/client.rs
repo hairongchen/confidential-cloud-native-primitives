@@ -29,9 +29,6 @@ lazy_static! {
 
 pub mod ccnp_server_pb {
     tonic::include_proto!("ccnp_server_pb");
-
-    // pub(crate) const FILE_DESCRIPTOR_SET: &[u8] =
-    //     tonic::include_file_descriptor_set!("ccnp_server_descriptor");
 }
 
 pub struct CcnpServiceClient {
