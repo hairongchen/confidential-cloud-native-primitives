@@ -23,7 +23,7 @@ fn main() {
 
     // get number of measurement registers
     info!("call cc trusted API [get_measurement_count] to get number of measurement registers!");
-    let count = match API::get_measurement_count() {
+    let _count = match API::get_measurement_count() {
         Ok(count) => {
             info!("measurement registers count: {}", count);
             count
@@ -36,12 +36,12 @@ fn main() {
 
     // retrive and show measurement registers
     info!("call cc trusted API [get_cc_measurement] to get measurement register content!");
-    for index in vec![0,1,2,3] {
+    for index in vec![0,1,3] {
         let tcg_digest = match API::get_cc_measurement(index, defalt_algo.algo_id) {
             Ok(tcg_digest) => tcg_digest,
             Err(e) => {
                 error!("error get measurement: {:?}", e);
-                continue;
+                return;
             }
         };
         info!(
@@ -51,4 +51,18 @@ fn main() {
             tcg_digest.get_hash()
         );
     }
+
+    let tcg_digest = match API::get_cc_measurement(2, defalt_algo.algo_id) {
+        Ok(tcg_digest) => tcg_digest,
+        Err(e) => {
+            error!("error get measurement: {:?}", e);
+            return;
+        }
+    };
+    info!(
+        "show index = {}, algo = {:?}, hash = {:02X?}",
+        index,
+        tcg_digest.get_algorithm_id_str(),
+        tcg_digest.get_hash()
+    );
 }
