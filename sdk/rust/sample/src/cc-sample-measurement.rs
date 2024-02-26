@@ -51,18 +51,4 @@ fn main() {
             tcg_digest.get_hash()
         );
     }
-
-    let tcg_digest = match API::get_cc_measurement(2, defalt_algo.algo_id) {
-        Ok(tcg_digest) => tcg_digest,
-        Err(e) => {
-            error!("error get measurement: {:?}", e);
-            return;
-        }
-    };
-    info!(
-        "show index = {}, algo = {:?}, hash = {:02X?}",
-        2,
-        tcg_digest.get_algorithm_id_str(),
-        tcg_digest.get_hash()
-    );
 }
