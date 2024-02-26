@@ -68,7 +68,7 @@ fn main() {
 
         // parse the cc report with API "parse_cc_report"
         if report1.cc_type == TeeType::TDX {
-            let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
+            let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report1.cc_report) {
                 Ok(q) => q,
                 Err(e) => {
                     info!("error parse tdx quote: {:?}", e);
