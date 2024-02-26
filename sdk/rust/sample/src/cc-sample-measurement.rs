@@ -36,7 +36,7 @@ fn main() {
 
     // retrive and show measurement registers
     info!("call cc trusted API [get_cc_measurement] to get measurement register content!");
-    for index in 0..count {
+    for index in vec![0,1,3] {
         let tcg_digest = match API::get_cc_measurement(index, defalt_algo.algo_id) {
             Ok(tcg_digest) => tcg_digest,
             Err(e) => {
