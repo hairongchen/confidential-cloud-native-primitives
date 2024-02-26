@@ -61,7 +61,7 @@ fn main() {
     };
     info!(
         "show index = {}, algo = {:?}, hash = {:02X?}",
-        index,
+        2,
         tcg_digest.get_algorithm_id_str(),
         tcg_digest.get_hash()
     );
