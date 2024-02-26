@@ -13,6 +13,7 @@ use tokio::net::UnixStream;
 use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use tower::service_fn;
+use log::info;
 
 //FixMe: use map from cc_type
 lazy_static! {
