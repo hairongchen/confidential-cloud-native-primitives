@@ -14,7 +14,6 @@ use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use tower::service_fn;
 
-//FixMe: use map from cc_type
 lazy_static! {
     pub static ref TEE_VALUE_TYPE_MAP: HashMap<i32, TeeType> = {
         let mut map: HashMap<i32, TeeType> = HashMap::new();
@@ -283,8 +282,9 @@ impl CcnpServiceClient {
 
         for line in data_lines {
             /*
-             * ... /var/lib/docker/containers/{container-id}/{file} ...
-             * example: 
+             * line format: 
+             *      ... /var/lib/docker/containers/{container-id}/{file} ...
+             * sample: 
              */
             if line.contains(docker_pattern) {
                 let element = line.split(docker_pattern).last();
@@ -297,8 +297,10 @@ impl CcnpServiceClient {
             }
 
             /*
-             * line: ... /var/lib/kubelet/pods/{container-id}/{file} ...
-             * example: 2958 2938 253:1 /var/lib/kubelet/pods/a45f46f0-20be-45ab-ace6-b77e8e2f062c/containers/busybox/8f8d892c /dev/termination-log rw,relatime - ext4 /dev/vda1 rw,discard,errors=remount-ro
+             * line format: 
+             *      ... /var/lib/kubelet/pods/{container-id}/{file} ...
+             * sample: 
+             *      2958 2938 253:1 /var/lib/kubelet/pods/a45f46f0-20be-45ab-ace6-b77e8e2f062c/containers/busybox/8f8d892c /dev/termination-log rw,relatime - ext4 /dev/vda1 rw,discard,errors=remount-ro
              */
             if line.contains(k8s_pattern){
                 let element = line.split(k8s_pattern).last();
