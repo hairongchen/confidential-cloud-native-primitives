@@ -1,9 +1,9 @@
-use anyhow::anyhow;
 use crate::client::ccnp_server_pb::{
     ccnp_client::CcnpClient, GetCcEventlogRequest, GetCcEventlogResponse, GetCcMeasurementRequest,
     GetCcMeasurementResponse, GetCcReportRequest, GetCcReportResponse, GetDefaultAlgorithmRequest,
-    GetDefaultAlgorithmResponse, GetMeasurementCountRequest, GetMeasurementCountResponse
+    GetDefaultAlgorithmResponse, GetMeasurementCountRequest, GetMeasurementCountResponse,
 };
+use anyhow::anyhow;
 use cctrusted_base::api_data::ExtraArgs;
 use cctrusted_base::cc_type::TeeType;
 use core::result::Result::Ok;
@@ -53,8 +53,11 @@ impl CcnpServiceClient {
         let container_id = match self.get_container_id() {
             Ok(id) => id,
             Err(e) => {
-                return Err(anyhow!("[get_cc_report_from_server_async] error getting the container ID: {:?}", e));
-            },
+                return Err(anyhow!(
+                    "[get_cc_report_from_server_async] error getting the container ID: {:?}",
+                    e
+                ));
+            }
         };
 
         let request = Request::new(GetCcReportRequest {
@@ -112,8 +115,11 @@ impl CcnpServiceClient {
         let container_id = match self.get_container_id() {
             Ok(id) => id,
             Err(e) => {
-                return Err(anyhow!("[get_cc_measurement_from_server_async] error getting the container ID: {:?}", e));
-            },
+                return Err(anyhow!(
+                    "[get_cc_measurement_from_server_async] error getting the container ID: {:?}",
+                    e
+                ));
+            }
         };
 
         let request = Request::new(GetCcMeasurementRequest {
@@ -163,8 +169,11 @@ impl CcnpServiceClient {
         let container_id = match self.get_container_id() {
             Ok(id) => id,
             Err(e) => {
-                return Err(anyhow!("[get_cc_eventlog_from_server_async] error getting the container ID: {:?}", e));
-            },
+                return Err(anyhow!(
+                    "[get_cc_eventlog_from_server_async] error getting the container ID: {:?}",
+                    e
+                ));
+            }
         };
 
         let request = Request::new(GetCcEventlogRequest {
@@ -282,9 +291,9 @@ impl CcnpServiceClient {
 
         for line in data_lines {
             /*
-             * line format: 
+             * line format:
              *      ... /var/lib/docker/containers/{container-id}/{file} ...
-             * sample: 
+             * sample:
              */
             if line.contains(docker_pattern) {
                 let element = line.split(docker_pattern).last();
@@ -297,24 +306,25 @@ impl CcnpServiceClient {
             }
 
             /*
-             * line format: 
+             * line format:
              *      ... /var/lib/kubelet/pods/{container-id}/{file} ...
-             * sample: 
+             * sample:
              *      2958 2938 253:1 /var/lib/kubelet/pods/a45f46f0-20be-45ab-ace6-b77e8e2f062c/containers/busybox/8f8d892c /dev/termination-log rw,relatime - ext4 /dev/vda1 rw,discard,errors=remount-ro
              */
-            if line.contains(k8s_pattern){
+            if line.contains(k8s_pattern) {
                 let element = line.split(k8s_pattern).last();
                 if element.is_some() {
                     let (left, _) = element.unwrap().split_once("/").unwrap();
                     let id = left.replace("-", "_");
                     return Ok(id);
                 } else {
-                   return Err(anyhow!("[get_container_id] incorrect k8s pod container info in /proc/self/mountinfo!"));
+                    return Err(anyhow!("[get_container_id] incorrect k8s pod container info in /proc/self/mountinfo!"));
                 }
             }
         }
 
-        Err(anyhow!("[get_container_id] no container info in /proc/self/mountinfo!"))
-
+        Err(anyhow!(
+            "[get_container_id] no container info in /proc/self/mountinfo!"
+        ))
     }
 }

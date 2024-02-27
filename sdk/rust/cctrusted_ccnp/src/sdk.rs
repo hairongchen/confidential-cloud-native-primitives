@@ -51,7 +51,10 @@ impl CCTrustedApi for API {
         let response = match ccnp_service_client.get_cc_measurement_count_from_server() {
             Ok(r) => r,
             Err(e) => {
-                return Err(anyhow!("[get_measurement_count] err get cc measurement count: {:?}", e));
+                return Err(anyhow!(
+                    "[get_measurement_count] err get cc measurement count: {:?}",
+                    e
+                ));
             }
         };
 
@@ -149,7 +152,10 @@ impl CCTrustedApi for API {
         let response = match ccnp_service_client.get_cc_default_algorithm_from_server() {
             Ok(r) => r,
             Err(e) => {
-                return Err(anyhow!("[get_default_algorithm] err get cc get default algorithm: {:?}", e));
+                return Err(anyhow!(
+                    "[get_default_algorithm] err get cc get default algorithm: {:?}",
+                    e
+                ));
             }
         };
 
