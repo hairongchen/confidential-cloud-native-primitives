@@ -298,7 +298,7 @@ impl CcnpServiceClient {
             if line.contains(docker_pattern) {
                 let element = line.split(docker_pattern).last();
                 if element.is_some() {
-                    let (id, _) = element.unwrap().split_once("/").unwrap();
+                    let (id, _) = element.unwrap().split_once('/').unwrap();
                     return Ok(id.to_string());
                 } else {
                     return Err(anyhow!("[get_container_id] incorrect docker container info in /proc/self/mountinfo!"));
@@ -314,8 +314,8 @@ impl CcnpServiceClient {
             if line.contains(k8s_pattern) {
                 let element = line.split(k8s_pattern).last();
                 if element.is_some() {
-                    let (left, _) = element.unwrap().split_once("/").unwrap();
-                    let id = left.replace("-", "_");
+                    let (left, _) = element.unwrap().split_once('/').unwrap();
+                    let id = left.replace('-', '_');
                     return Ok(id);
                 } else {
                     return Err(anyhow!("[get_container_id] incorrect k8s pod container info in /proc/self/mountinfo!"));
