@@ -315,7 +315,7 @@ impl CcnpServiceClient {
                 let element = line.split(k8s_pattern).last();
                 if element.is_some() {
                     let (left, _) = element.unwrap().split_once('/').unwrap();
-                    let id = left.replace('-', '_');
+                    let id = left.replace('-', "_");
                     return Ok(id);
                 } else {
                     return Err(anyhow!("[get_container_id] incorrect k8s pod container info in /proc/self/mountinfo!"));
