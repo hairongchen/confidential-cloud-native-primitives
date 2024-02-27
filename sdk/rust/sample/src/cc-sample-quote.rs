@@ -66,23 +66,23 @@ fn main() {
 
     info!("length of the cc report: {}", report1.cc_report.len());
 
-        // parse the cc report with API "parse_cc_report"
-        if report1.cc_type == TeeType::TDX {
-            let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report1.cc_report) {
-                Ok(q) => q,
-                Err(e) => {
-                    info!("error parse tdx quote: {:?}", e);
-                    return;
-                }
-            };
-            info!(
-                "version = {}, report_data = {}",
-                tdx_quote.header.version,
-                base64::encode(tdx_quote.body.report_data)
-            );
-    
-            // show data of the struct TdxQuoteHeader
-            info!("call struct show function to show data of the struct TdxQuoteHeader!");
-            tdx_quote.header.show();
-        }
+    // parse the cc report with API "parse_cc_report"
+    if report1.cc_type == TeeType::TDX {
+        let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report1.cc_report) {
+            Ok(q) => q,
+            Err(e) => {
+                info!("error parse tdx quote: {:?}", e);
+                return;
+            }
+        };
+        info!(
+            "version = {}, report_data = {}",
+            tdx_quote.header.version,
+            base64::encode(tdx_quote.body.report_data)
+        );
+
+        // show data of the struct TdxQuoteHeader
+        info!("call struct show function to show data of the struct TdxQuoteHeader!");
+        tdx_quote.header.show();
+    }
 }
