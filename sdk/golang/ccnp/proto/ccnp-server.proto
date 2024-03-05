@@ -1,4 +1,6 @@
 syntax = "proto3";
+option go_package = "https://github.com/hairongchen/confidential-cloud-native-primitives/tree/go_sdk_dev1/sdk/golang/ccnp/";
+
 package ccnp_server_pb;
 
 message HealthCheckRequest {
