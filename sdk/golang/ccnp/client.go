@@ -21,7 +21,7 @@ const (
 	UDS_PATH = "unix:/run/ccnp/uds/ccnp-server.sock"
 )
 
-func GetCCReportFromServer(userData string, nonce string) pb.GetCcReportResponse {
+func GetCCReportFromServer(userData string, nonce string) (pb.GetCcReportResponse, error) {
 	channel, err := grpc.Dial(UDS_PATH, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("[GetCCReportFromServer] can not connect to CCNP server UDS at %v with error: %v", UDS_PATH, err)
