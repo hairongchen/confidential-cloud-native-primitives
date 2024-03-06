@@ -8,7 +8,7 @@ import (
 	"math/rand"
 
 	"github.com/cc-api/cc-trusted-api/common/golang/cctrusted_base"
-	"github.com/hairongchen/confidential-cloud-native-primitives/sdk/golang/ccnp"
+	ccnpsdk "github.com/hairongchen/confidential-cloud-native-primitives/sdk/golang/ccnp"
 )
 
 func main() {
