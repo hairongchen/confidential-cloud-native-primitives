@@ -10,7 +10,6 @@ import (
 
 	"github.com/cc-api/cc-trusted-api/common/golang/cctrusted_base"
 	"github.com/cc-api/cc-trusted-api/common/golang/cctrusted_base/tdx"
-	pb "github.com/hairongchen/confidential-cloud-native-primitives/sdk/golang/ccnp/proto"
 )
 
 var _ cctrusted_base.CCTrustedAPI = (*SDK)(nil)
@@ -19,19 +18,19 @@ type SDK struct {
 }
 
 // GetCCReport implements CCTrustedAPI
-func (s *SDK) GetCCReport(nonce string, userData string, _ any) (pb.GetCcReportResponse, error) {
-	response, err := GetCCReportFromServer(userData, nonce)
+func (s *SDK) GetCCReport(nonce string, userData string, _ any) (cctrusted_base.Report, error) {
+	result, err := GetCCReportFromServer(userData, nonce)
 	if err != nil {
 		return nil, err
 	}
 
-	switch response.cc_type {
+	switch TYPE_CC_TDX { //FIXME: use type get from result
 	case cctrusted_base.TYPE_CC_TDX:
 		report, err := tdx.NewTdxReportFromBytes(reportBytes)
 		if err != nil {
 			return nil, err
 		}
-		return report, nil
+		return cctrusted_base.Report{}, nil
 	default:
 	}
 	return nil, errors.New("[GetCCReport] get CC report failed")
@@ -44,30 +43,25 @@ func (s *SDK) DumpCCReport(reportBytes []byte) error {
 
 // GetCCMeasurement implements cctrusted_base.CCTrustedAPI.
 func (s *SDK) GetCCMeasurement(index int, alg cctrusted_base.TCG_ALG) (cctrusted_base.TcgDigest, error) {
-	emptyRet := cctrusted_base.TcgDigest{}
-	return emptyRet, nil
+	panic("not implemented!")
 }
 
 // GetMeasurementCount implements cctrusted_base.CCTrustedAPI.
 func (s *SDK) GetMeasurementCount() (int, error) {
-	return 4, nil
+	panic("not implemented!")
 }
 
 // ReplayCCEventLog implements cctrusted_base.CCTrustedAPI.
-// func (s *SDK) ReplayCCEventLog(formatedEventLogs []cctrusted_base.FormatedTcgEvent) map[int]map[cctrusted_base.TCG_ALG][]byte {
-func (s *SDK) ReplayCCEventLog(formatedEventLogs []cctrusted_base.FormatedTcgEvent) error {
-	return nil
+func (s *SDK) ReplayCCEventLog(formatedEventLogs []cctrusted_base.FormatedTcgEvent) map[int]map[cctrusted_base.TCG_ALG][]byte {
+	panic("not implemented!")
 }
 
 // GetDefaultAlgorithm implements cctrusted_base.CCTrustedAPI.
-// func (s *SDK) GetDefaultAlgorithm() cctrusted_base.TCG_ALG {
-func (s *SDK) GetDefaultAlgorithm() error {
-	return nil
+func (s *SDK) GetDefaultAlgorithm() cctrusted_base.TCG_ALG {
+	panic("not implemented!")
 }
 
 // SelectEventlog implements CCTrustedAPI.
 func (s *SDK) GetCCEventLog(start int32, count int32) (*cctrusted_base.EventLogger, error) {
 	panic("not implemented!")
-
-	//return nil
 }
