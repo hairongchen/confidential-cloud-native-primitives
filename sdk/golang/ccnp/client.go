@@ -41,7 +41,7 @@ func GetCCReportFromServer(userData string, nonce string) (pb.GetCcReportRespons
 		log.Fatalf("[GetCCReportFromServer] fail to get cc report with error: %v", err)
 	}
 
-	return response, nil
+	return *response, nil
 }
 
 func GetContainerId() string {
@@ -94,4 +94,5 @@ func GetContainerId() string {
 	}
 
 	log.Fatalf("[GetContainerId] no docker or kubernetes container patter found in /proc/self/mountinfo")
+	return nil
 }
