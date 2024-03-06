@@ -6,14 +6,14 @@ import (
 	"math"
 	"math/rand"
 
-	"github.com/hairongchen/confidential-cloud-native-primitives/sdk/golang/ccnp"
+	"github.com/hairongchen/confidential-cloud-native-primitives/sdk/golang/ccnp/ccnpsdk"
 )
 
 func main() {
 	nonce := makeNonce()
 	userData := makeUserData()
 
-	report, err := ccnp.ccnpsdk.GetCCReport(nonce, userData, nil)
+	report, err := ccnpsdk.GetCCReport(nonce, userData, nil)
 	if err != nil {
 		return err
 	}
