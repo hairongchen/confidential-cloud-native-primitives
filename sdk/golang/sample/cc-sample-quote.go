@@ -6,20 +6,22 @@ import (
 	"math"
 	"math/rand"
 
+	"github.com/cc-api/cc-trusted-api/common/golang/cctrusted_base"
 	"github.com/hairongchen/confidential-cloud-native-primitives/sdk/golang/ccnp"
 )
 
 func main() {
 	nonce := makeNonce()
 	userData := makeUserData()
+	FlagFormat := "raw"
 
 	report, err := ccnpsdk.GetCCReport(nonce, userData, nil)
 	if err != nil {
-		return err
+		log.Fatalf("can not get cc report with error: %v", err)
 	}
 
 	report.Dump(cctrusted_base.QuoteDumpFormat(FlagFormat))
-	return nil
+	return
 }
 
 func makeNonce() string {
