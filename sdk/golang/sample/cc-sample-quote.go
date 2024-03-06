@@ -1,4 +1,4 @@
-package main
+package sample
 
 import (
 	"encoding/base64"
@@ -8,7 +8,6 @@ import (
 	"math/rand"
 
 	"github.com/cc-api/cc-trusted-api/common/golang/cctrusted_base"
-	"github.com/hairongchen/confidential-cloud-native-primitives/sdk/golang/ccnp"
 )
 
 func main() {
@@ -16,7 +15,7 @@ func main() {
 	userData := makeUserData()
 	FlagFormat := "raw"
 
-	report, err := ccnpsdk.GetCCReport(nonce, userData, nil)
+	report, err := ccnp.ccnpsdk.GetCCReport(nonce, userData, nil)
 	if err != nil {
 		log.Fatalf("can not get cc report with error: %v", err)
 	}
