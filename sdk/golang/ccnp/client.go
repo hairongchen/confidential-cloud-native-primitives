@@ -37,7 +37,7 @@ func GetCCReportFromServer(userData string, nonce string) (pb.GetCcReportRespons
 
 	var ContainerId = GetContainerId()
 
-	response, err := client.GetCcReport(ctx, &pb.GetCcReportRequest{container_id: containerId, nonce: nonce, user_data: userData})
+	response, err := client.GetCcReport(ctx, &pb.GetCcReportRequest{containerId: containerId, Nonce: nonce, userData: userData})
 	if err != nil {
 		return nil, fmt.Errorf("[GetCCReportFromServer] fail to get cc report with error: %v", err)
 	}
