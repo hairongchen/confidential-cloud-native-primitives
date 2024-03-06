@@ -13,7 +13,7 @@ func main() {
 	nonce := makeNonce()
 	userData := makeUserData()
 
-	report, err := ccnp.sdk.GetCCReport(nonce, userData, nil)
+	report, err := ccnp.ccnpsdk.GetCCReport(nonce, userData, nil)
 	if err != nil {
 		return err
 	}
