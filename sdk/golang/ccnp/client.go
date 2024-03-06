@@ -26,7 +26,7 @@ func GetCCReportFromServer(userData string, nonce string) (GetCcReportResponse, 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	var ContainerId = GetContainerId();
+	var ContainerId = GetContainerId()
 
 	response, err := client.GetCcReport(ctx, &pb.GetCcReportRequest{container_id: containerId, nonce: nonce, user_data: userData})
 	if err != nil {
@@ -36,7 +36,7 @@ func GetCCReportFromServer(userData string, nonce string) (GetCcReportResponse, 
 	return response, nil
 }
 
-func GetContainerId() (id string, error){
+func GetContainerId() (string, error) {
 	var mountinfoFile string = "/proc/self/mountinfo"
 	var dockerPattern string = "/docker/containers/"
 	var k8sPattern string = "/kubelet/pods/"
@@ -54,11 +54,11 @@ func GetContainerId() (id string, error){
 	}
 
 	for _, line := range lines {
-        /*
-         * line format:
-         *      ... /var/lib/docker/containers/{container-id}/{file} ...
-         * sample:
-         */
+		/*
+		 * line format:
+		 *      ... /var/lib/docker/containers/{container-id}/{file} ...
+		 * sample:
+		 */
 		if strings.Contains(line, dockerPattern) {
 			// /var/lib/docker/containers/{container-id}/{file}
 			var res = strings.Split(line, dockerPattern)
@@ -68,12 +68,12 @@ func GetContainerId() (id string, error){
 			return containerId, nil
 		}
 
-        /*
-         * line format:
-         *      ... /var/lib/kubelet/pods/{container-id}/{file} ...
-         * sample:
-         *      2958 2938 253:1 /var/lib/kubelet/pods/a45f46f0-20be-45ab-ace6-b77e8e2f062c/containers/busybox/8f8d892c /dev/termination-log rw,relatime - ext4 /dev/vda1 rw,discard,errors=remount-ro
-         */
+		/*
+		 * line format:
+		 *      ... /var/lib/kubelet/pods/{container-id}/{file} ...
+		 * sample:
+		 *      2958 2938 253:1 /var/lib/kubelet/pods/a45f46f0-20be-45ab-ace6-b77e8e2f062c/containers/busybox/8f8d892c /dev/termination-log rw,relatime - ext4 /dev/vda1 rw,discard,errors=remount-ro
+		 */
 		if strings.Contains(line, k8sPattern) {
 			// /var/lib/kubelet/pods/{container-id}/{file}
 			var res = strings.Split(line, k8sPattern)
