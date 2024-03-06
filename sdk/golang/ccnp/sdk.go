@@ -66,10 +66,8 @@ func (s *SDK) GetDefaultAlgorithm() error {
 }
 
 // SelectEventlog implements CCTrustedAPI.
-// func (s *SDK) GetCCEventLog(start int32, count int32) (*cctrusted_base.EventLogger, error) {
-func (s *SDK) GetCCEventLog(start int32, count int32) error {
+func (s *SDK) GetCCEventLog(start int32, count int32) (*cctrusted_base.EventLogger, error) {
+	panic("not implemented!")
 
-	el, err := s.internelEventlog()
-
-	return nil
+	//return nil
 }
