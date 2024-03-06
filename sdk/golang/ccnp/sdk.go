@@ -10,6 +10,7 @@ import (
 
 	"github.com/cc-api/cc-trusted-api/common/golang/cctrusted_base"
 	"github.com/cc-api/cc-trusted-api/common/golang/cctrusted_base/tdx"
+	pb "github.com/hairongchen/confidential-cloud-native-primitives/sdk/golang/ccnp/proto"
 )
 
 var _ cctrusted_base.CCTrustedAPI = (*SDK)(nil)
@@ -18,7 +19,7 @@ type SDK struct {
 }
 
 // GetCCReport implements CCTrustedAPI
-func (s *SDK) GetCCReport(nonce string, userData string, _ any) (cctrusted_base.Report, error) {
+func (s *SDK) GetCCReport(nonce string, userData string, _ any) (pb.GetCcReportResponse, error) {
 	response, err := GetCCReportFromServer(userData, nonce)
 	if err != nil {
 		return nil, err
@@ -34,4 +35,9 @@ func (s *SDK) GetCCReport(nonce string, userData string, _ any) (cctrusted_base.
 	default:
 	}
 	return nil, errors.New("[GetCCReport] get CC report failed")
+}
+
+// DumpCCReport implements cctrusted_base.CCTrustedAPI.
+func (s *SDK) DumpCCReport(reportBytes []byte) error {
+	return nil
 }
