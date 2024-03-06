@@ -24,13 +24,13 @@ func (s *SDK) GetCCReport(nonce string, userData string, _ any) (cctrusted_base.
 		return nil, err
 	}
 
-	switch TYPE_CC_TDX { //FIXME: use type get from result
+	switch cctrusted_base.TYPE_CC_TDX { //FIXME: use type get from result
 	case cctrusted_base.TYPE_CC_TDX:
-		report, err := tdx.NewTdxReportFromBytes(reportBytes)
+		report, err := tdx.NewTdxReportFromBytes(result.CcReport)
 		if err != nil {
 			return nil, err
 		}
-		return cctrusted_base.Report{}, nil
+		return report, nil
 	default:
 	}
 	return nil, errors.New("[GetCCReport] get CC report failed")

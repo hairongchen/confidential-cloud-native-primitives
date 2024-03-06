@@ -94,5 +94,5 @@ func GetContainerId() string {
 	}
 
 	log.Fatalf("[GetContainerId] no docker or kubernetes container patter found in /proc/self/mountinfo")
-	return nil
+	return ""
 }
