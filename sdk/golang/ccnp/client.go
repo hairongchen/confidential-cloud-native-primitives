@@ -6,14 +6,23 @@
 package ccnpsdk
 
 import (
+	"bufio"
+	"context"
+	"errors"
+	"fmt"
+	"os"
+	"strings"
+	"time"
+
 	pb "github.com/hairongchen/confidential-cloud-native-primitives/sdk/golang/ccnp/proto"
+	"google.golang.org/grpc"
 )
 
 const (
 	UDS_PATH = "unix:/run/ccnp/uds/ccnp-server.sock"
 )
 
-func GetCCReportFromServer(userData string, nonce string) (GetCcReportResponse, error) {
+func GetCCReportFromServer(userData string, nonce string) (pb.GetCcReportResponse, error) {
 	channel, err := grpc.Dial(UDS_PATH, grpc.WithInsecure())
 	if err != nil {
 		return nil, fmt.Errorf("[GetCCReportFromServer] can not connect to CCNP server UDS at %v with error: %v", UDS_PATH, err)
