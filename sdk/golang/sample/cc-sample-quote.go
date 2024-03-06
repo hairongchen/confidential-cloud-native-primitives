@@ -6,7 +6,7 @@ import (
 	"math"
 	"math/rand"
 
-	github.com/hairongchen/confidential-cloud-native-primitives/sdk/golang/ccnp
+	"github.com/hairongchen/confidential-cloud-native-primitives/sdk/golang/ccnp"
 )
 
 func main() {
