@@ -14,6 +14,9 @@ import (
 
 var _ cctrusted_base.CCTrustedAPI = (*SDK)(nil)
 
+type SDK struct {
+}
+
 // GetCCReport implements CCTrustedAPI
 func (s *SDK) GetCCReport(nonce string, userData string, _ any) (cctrusted_base.Report, error) {
 	response, err := GetCCReportFromServer(userData, nonce)
