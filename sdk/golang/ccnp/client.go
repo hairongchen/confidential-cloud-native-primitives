@@ -3,7 +3,7 @@
 * SPDX-License-Identifier: Apache-2.0
  */
 
-package client
+package ccnpsdk
 
 import (
 	pb "github.com/hairongchen/confidential-cloud-native-primitives/sdk/golang/ccnp/proto"
